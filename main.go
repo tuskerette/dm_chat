@@ -46,7 +46,7 @@ func main() {
 			}
 			pair := strings.Split(string(body), "=")
 
-			pwd := os.Getenv("password")
+			pwd := os.Getenv("PASSWORD")
 			if pair[1] != pwd {
 				fmt.Fprintf(w, "<p>Wrong password</p>")
 				return
