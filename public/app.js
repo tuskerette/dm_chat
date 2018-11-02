@@ -5,9 +5,8 @@ new Vue({
         ws: null, // Our websocket
         newMsg: '', // Holds new messages to be sent to the server
         chatContent: '', // A running list of chat messages displayed on the screen
-        email: null, // Email address used for grabbing an avatar
         username: null, // Our username
-        joined: false // True if email and username have been filled in
+        joined: false // True if username have been filled in
     },
 
     created: function() {
@@ -30,7 +29,6 @@ new Vue({
             if (this.newMsg != '') {
                 this.ws.send(
                     JSON.stringify({
-                        email: this.email,
                         username: this.username,
                         message: $('<p>').html(this.newMsg).text() // Strip out html
                     }
@@ -40,21 +38,21 @@ new Vue({
         },
 
         join: function () {
-            if (!this.email) {
-                Materialize.toast('You must enter an email', 2000);
-                return
-            }
             if (!this.username) {
                 Materialize.toast('You must choose a username', 2000);
                 return
             }
-            this.email = $('<p>').html(this.email).text();
             this.username = $('<p>').html(this.username).text();
             this.joined = true;
         },
 
         exit: function () {
             this.joined = false;
+        },
+
+        enter_password: function () {
+            this.password
         }
+
     }
 });

@@ -1,8 +1,13 @@
 package main
 
 import (
+	"fmt"
+	"io/ioutil"
 	"log"
 	"net/http"
+	"os"
+	"path/filepath"
+	"strings"
 
 	"github.com/gorilla/websocket"
 )
@@ -25,9 +30,39 @@ type Message struct {
 }
 
 func main() {
-	// Create a simple file server
-	fs := http.FileServer(http.Dir("../public"))
-	http.Handle("/", fs)
+	http.Handle("/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if r.Method == "GET" {
+			content, err := ioutil.ReadFile(filepath.Join("..", "public", "prompt.html"))
+			if err != nil {
+				fmt.Fprintf(w, "<p>Cannot read the page</p>")
+				return
+			}
+			fmt.Fprintf(w, string(content))
+			return
+		} else {
+			body, err := ioutil.ReadAll(r.Body)
+			if err != nil {
+				fmt.Fprintf(w, "<p>Error reading password</p>")
+				return
+			}
+			pair := strings.Split(string(body), "=")
+
+			pwd := os.Getenv("password")
+			if pair[1] != pwd {
+				fmt.Fprintf(w, "<p>Wrong password</p>")
+				return
+			}
+
+			content, err := ioutil.ReadFile(filepath.Join("..", "public", "index.html"))
+			if err != nil {
+				fmt.Fprintf(w, "<p>Cannot read the page</p>")
+				return
+			}
+			fmt.Fprintf(w, string(content))
+			return
+		}
+
+	}))
 
 	// Configure websocket route
 	http.HandleFunc("/ws", handleConnections)
