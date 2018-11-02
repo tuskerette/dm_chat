@@ -24,7 +24,6 @@ var upgrader = websocket.Upgrader{
 
 // Define our message object
 type Message struct {
-	Email    string `json:"email"`
 	Username string `json:"username"`
 	Message  string `json:"message"`
 }
@@ -32,7 +31,7 @@ type Message struct {
 func main() {
 	http.Handle("/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		if r.Method == "GET" {
-			content, err := ioutil.ReadFile(filepath.Join("..", "public", "prompt.html"))
+			content, err := ioutil.ReadFile(filepath.Join("public", "prompt.html"))
 			if err != nil {
 				fmt.Fprintf(w, "<p>Cannot read the page</p>")
 				return
@@ -53,7 +52,7 @@ func main() {
 				return
 			}
 
-			content, err := ioutil.ReadFile(filepath.Join("..", "public", "index.html"))
+			content, err := ioutil.ReadFile(filepath.Join("public", "index.html"))
 			if err != nil {
 				fmt.Fprintf(w, "<p>Cannot read the page</p>")
 				return
@@ -71,7 +70,11 @@ func main() {
 	go handleMessages()
 
 	port := os.Getenv("PORT")
-	err := http.ListenAndServe(port, nil)
+	if port == "" {
+		port = "8000"
+	}
+
+	err := http.ListenAndServe(":"+port, nil)
 	if err != nil {
 		log.Fatal("ListenAndServe: ", err)
 	}
