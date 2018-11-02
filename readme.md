@@ -1,1 +1,8 @@
-Exercise: chat made with go and vue.js
+D⚡️M Chat
+
+Chat made with go and vue.js
+
+```
+cd ./src
+go run main.go
+```

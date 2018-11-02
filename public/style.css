@@ -8,6 +8,10 @@ main {
   flex: 1 0 auto;
 }
 
+.brand-logo {
+	margin-left: .3em;
+}
+
 #chat-messages {
   min-height: 10vh;
   height: 60vh;
