@@ -1,0 +1,4 @@
+[metadata.heroku]
+  root-package = "github.com/tuskerette/dm_chat"
+  go-version = "go1.10.3"
+  ensure = "false"
