@@ -2,11 +2,13 @@ new Vue({
     el: '#app',
 
     data: {
-        ws: null, // Our websocket
-        newMsg: '', // Holds new messages to be sent to the server
-        chatContent: '', // A running list of chat messages displayed on the screen
-        username: null, // Our username
-        joined: false // True if username have been filled in
+        ws: null,
+        newMsg: '',
+        chatContent: '',
+        username: null,
+        joined: false,
+        password: null,
+        auth: false
     },
 
     created: function() {
@@ -22,6 +24,7 @@ new Vue({
             var element = document.getElementById('chat-messages');
             element.scrollTop = element.scrollHeight; // Auto scroll to the bottom
         });
+        this.auth = false;
     },
 
     methods: {
@@ -35,6 +38,7 @@ new Vue({
                 ));
                 this.newMsg = ''; // Reset newMsg
             }
+            this.auth = false;
         },
 
         join: function () {
@@ -44,14 +48,20 @@ new Vue({
             }
             this.username = $('<p>').html(this.username).text();
             this.joined = true;
+            this.auth = false;
         },
 
         exit: function () {
             this.joined = false;
-        },
+            this.auth = false;
+        }
 
-        enter_password: function () {
-            this.password
+        auth: function() {
+            if (!this.auth) {
+                Materialize.toast('You must center the password', 2000);
+                return
+            }
+            this.password = $('<p>').html(this.password).text();
         }
 
     }
