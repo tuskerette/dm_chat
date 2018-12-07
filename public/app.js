@@ -1,14 +1,21 @@
+$('#app').hide();
+$('#auth-form').on('submit', function(e) {
+    e.preventDefault();
+    if($('#password').val() == window.password) {
+        $('#auth-form').hide();
+        $('#app').show();
+    }
+})
+
 new Vue({
     el: '#app',
 
     data: {
-        ws: null,
+        ws: null, // websocket
         newMsg: '',
         chatContent: '',
         username: null,
-        joined: false,
-        password: null,
-        auth: false
+        joined: false
     },
 
     created: function() {
@@ -24,7 +31,6 @@ new Vue({
             var element = document.getElementById('chat-messages');
             element.scrollTop = element.scrollHeight; // Auto scroll to the bottom
         });
-        this.auth = false;
     },
 
     methods: {
@@ -38,7 +44,6 @@ new Vue({
                 ));
                 this.newMsg = ''; // Reset newMsg
             }
-            this.auth = false;
         },
 
         join: function () {
@@ -46,22 +51,16 @@ new Vue({
                 Materialize.toast('You must choose a username', 2000);
                 return
             }
-            this.username = $('<p>').html(this.username).text();
+            $('.brand-logo').append(' ::: Logged in as: '+this.username);
             this.joined = true;
-            this.auth = false;
         },
 
         exit: function () {
             this.joined = false;
-            this.auth = false;
-        }
+        },
 
-        auth: function() {
-            if (!this.auth) {
-                Materialize.toast('You must center the password', 2000);
-                return
-            }
-            this.password = $('<p>').html(this.password).text();
+        enter_password: function () {
+            this.password
         }
 
     }
