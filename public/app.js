@@ -1,11 +1,11 @@
-$('#app').hide();
-$('#auth-form').on('submit', function(e) {
-    e.preventDefault();
-    if($('#password').val() == window.password) {
-        $('#auth-form').hide();
-        $('#app').show();
-    }
-})
+// $('#app').hide();
+// $('#auth-form').on('submit', function(e) {
+//     e.preventDefault();
+//     if($('#password').val() == window.password) {
+//         $('#auth-form').hide();
+//         $('#app').show();
+//     }
+// });
 
 new Vue({
     el: '#app',
@@ -20,7 +20,7 @@ new Vue({
 
     created: function() {
         var self = this;
-        this.ws = new WebSocket('ws://' + window.location.host + '/ws');
+        this.ws = new WebSocket('wss://' + window.location.host + '/ws');
         this.ws.addEventListener('message', function(e) {
             var msg = JSON.parse(e.data);
             self.chatContent += '<div class="chip">'
